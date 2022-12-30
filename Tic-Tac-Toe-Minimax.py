@@ -6,7 +6,7 @@ import platform
 import time
 from os import system
 
-Player = -1
+HUMAN = -1
 COMP = +1
 board = [
     [0, 0, 0],
@@ -19,7 +19,7 @@ def evaluate(state):
    
     if wins(state, COMP):
         score = +1
-    elif wins(state, Player):
+    elif wins(state, HUMAN):
         score = -1
     else:
         score = 0
@@ -47,7 +47,7 @@ def wins(state, player):
 
 def game_over(state):
     
-    return wins(state, Player) or wins(state, COMP)
+    return wins(state, HUMAN) or wins(state, COMP)
 
 
 def empty_cells(state):
@@ -155,7 +155,7 @@ def ai_turn(c_choice, h_choice):
     time.sleep(1)
 
 
-def Player_turn(c_choice, h_choice):
+def human_turn(c_choice, h_choice):
     
     depth = len(empty_cells(board))
     if depth == 0 or game_over(board):
@@ -169,14 +169,14 @@ def Player_turn(c_choice, h_choice):
     }
 
     clean()
-    print(f'Player turn [{h_choice}]')
+    print(f'Human turn [{h_choice}]')
     render(board, c_choice, h_choice)
 
     while move < 1 or move > 9:
         try:
             move = int(input('Use numpad (1..9): '))
             coord = moves[move]
-            can_move = set_move(coord[0], coord[1], Player)
+            can_move = set_move(coord[0], coord[1], HUMAN)
 
             if not can_move:
                 print('Bad move')
@@ -193,7 +193,7 @@ def main():
     clean()
     h_choice = ''  # X or O
     c_choice = ''  # X or O
-    first = ''  # if player is the first
+    first = ''  # if human is the first
 
     # Player chooses X or O to play
     while h_choice != 'O' and h_choice != 'X':
@@ -226,12 +226,12 @@ def main():
             ai_turn(c_choice, h_choice)
             first = ''
 
-        Playerc_choice, h_choice)
+        human_turn(c_choice, h_choice)
         ai_turn(c_choice, h_choice)
 
-    if wins(board, Player
+    if wins(board, HUMAN):
         clean()
-        print(f'Player [{h_choice}]')
+        print(f'Human turn [{h_choice}]')
         render(board, c_choice, h_choice)
         print('YOU WIN!')
     elif wins(board, COMP):
